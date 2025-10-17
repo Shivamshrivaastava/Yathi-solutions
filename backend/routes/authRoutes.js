@@ -12,7 +12,9 @@ const signInToken = (user) =>{
 
     router.post('/register', [
         body('name').notEmpty().withMessage('Name is required'),
-        body('email').isEmail().withMessage('Valid email required')
+        body('email').isEmail().withMessage('Valid email required'),
+        body('password').isLength({min : 6}.withMessage('password >= 6 chars'))
     ])
+    const user =  user.createOne
     
 }
