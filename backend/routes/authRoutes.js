@@ -10,11 +10,19 @@ const signInToken = (user) =>{
         expiresIn : process.env.JWT_EXPIRES_IN||'7d'
     });
 
-    router.post('/register', [
-        body('name').notEmpty().withMessage('Name is required'),
-        body('email').isEmail().withMessage('Valid email required'),
-        body('password').isLength({min : 6}.withMessage('password >= 6 chars'))
-    ])
-    const user =  user.createOne
+    router.post('/register', async(req, res) =>{
+        try {
+            const {name , email, password} = req.body;
+            if(!name || !email || !password) {
+                return res.status(400).json({message : "all fields are required"});
+            }
+            const existingUser = await user.findOne({email});
+            if(existingUser){
+                return res.status(409).json({message : 'Email already registered'});
+            }
+        } catch (error) {
+            
+        }
+    }
     
 }
